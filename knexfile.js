@@ -28,14 +28,15 @@ module.exports = {
     },
     debug: true,
   },
+  // Tutorial: https://www.youtube.com/watch?v=Y0YL1rjnqGc&t=699s
   gcloud: {
     client: 'pg',
     connection: {
       host: process.env.DATABASE_HOST,
-      port: process.env.DATABASE_PORT,
+      // port: process.env.DATABASE_PORT,
+      database: process.env.DATABASE_NAME,
       user: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD, 
-      database: process.env.DATABASE_NAME,
     },
     pool: {
       min: 2,

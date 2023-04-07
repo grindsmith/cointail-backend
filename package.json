@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "prestart": "npx knex migrate:latest",
     "start": "node server.js",
     "gcloud:start": "npx functions-framework --target=server --signature-type=http",
     "gcloud:deploy": "gcloud functions deploy app --region=us-central1 --runtime=nodejs16 --entry-point=server",

@@ -45,12 +45,17 @@ app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(errorHandler);
 app.use(notFoundHandler);
 
+/**
+ * GCP Function Code
+ 
+exports.server = app;
+*/
+
 // Remove X-Frame-Options to allow for rendering in an Iframe
 app.use((req, res, next) => {
   res.removeHeader('X-Frame-Options');
   next();
 });
-
 
 // Logs every incoming HTTP requests
 app.use((req, res, next) => {
