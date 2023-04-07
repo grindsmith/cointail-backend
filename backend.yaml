@@ -5,6 +5,7 @@ env_variables:
   COINMARKETCAP_API_KEY: 57e29a30-ea7d-488c-aef5-a97c260270ce
   DATABASE_USER: postgres
   DATABASE_PASSWORD: wagmitv
-  DATABASE_NAME: web3-sandbox-db
-  DATABASE_HOST: /cloudsql/trim-modem-376419:us-central1:web3-sandbox-db
+  DATABASE_NAME: domedao
+  INSTANCE_NAME: web3-sandbox-db
+  INSTANCE_HOST: /cloudsql/trim-modem-376419:us-central1:web3-sandbox-db
   NODE_ENV: gcloud
