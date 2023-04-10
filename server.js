@@ -18,7 +18,7 @@ app.use(cors());
 // Documentation
 
 // Arbitrum
-const ArbitrumController = require('./controllers/arbitrum.controller');
+const ArbitrumController = require('./controllers/web3/arbitrum.controller');
 app.get('/api/arbitrum/account/:account/tokens', ArbitrumController.GET_ARBITRUM_ACCOUNT_TOKENS);
 app.get('/api/arbitrum/account/:account/transactions', ArbitrumController.GET_ARBITRUM_ACCOUNT_TRANSACTIONS);
 
@@ -30,14 +30,19 @@ app.get('/api/ethereum/token/pairs/:symbol', EthereumController.GET_ETHEREUM_TOK
 app.get('/api/ethereum/token/categories', EthereumController.GET_ETHEREUM_TOKEN_CATEGORIES);
 
 // Users
-const NotificationController = require('./controllers/notification.controller');
+const NotificationController = require('./controllers/web3/notification.controller');
 app.post('/api/notification', NotificationController.POST_NOTIFICATION_FROM_ALCHEMY);
 
 // Users
-const UserController = require('./controllers/user.controller');
-app.get('/api/user', UserController.getUser);
-app.post('/api/user', UserController.postUser);
-app.put('/api/user', UserController.putUser);
+const WalletController = require('./controllers/app/wallet.controller');
+app.get('/api/wallet', UserController.getUser);
+app.post('/api/wallet', UserController.postUser);
+app.put('/api/wallet', UserController.putUser);
+
+// Groups
+const GroupController = require('./controllers/group.controller');
+app.get('/api/group', GroupController.getAllGroups);
+app.get('/api/group/:id', GroupController.getGroup);
 
 // UI Routes
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

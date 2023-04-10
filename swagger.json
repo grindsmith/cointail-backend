@@ -256,6 +256,27 @@
                     }
                 }
             }
+        },
+        "/api/group": {
+            "get": {
+                "summary": "Get all Groups",
+                "description": "Returns all groups.",
+                "tags": ["Group"],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "balance": {
+                                    "type": "number",
+                                    "description": "All Groups"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -265,6 +286,8 @@
             "name": "Ethereum"
         },{
             "name": "User"
+        },{
+            "name": "Group"
         }
     ],
     "schemes": ["http"],
