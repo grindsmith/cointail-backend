@@ -3,12 +3,15 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  return knex.schema.createTable('group_users', function (table) {
+  return knex.schema.createTable('wallets', function (table) {
     table.increments('id').primary();
-    table.integer('user_id').references('users.id');
-    table.integer('group_id').references('groups.id')
+    table.string('address').unique();
+    table.string('name');
+    table.string('chain');
+    table.string('phone');
+    table.string('email');
     table.timestamps(true, true);
-  });
+});
 };
 
 /**
@@ -16,5 +19,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTable('group_users');
+  return knex.schema.dropTable('wallets');
 };

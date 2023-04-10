@@ -3,11 +3,10 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  return knex.schema.createTable('groups', function (table) {
+  return knex.schema.createTable('group_wallets', function (table) {
     table.increments('id').primary();
-    table.string('name').unique();
-    table.string('description');
-    table.string('ownerId').notNullable().defaultTo('1')
+    table.integer('wallet_id').references('wallets.id');
+    table.integer('group_id').references('groups.id')
     table.timestamps(true, true);
   });
 };
@@ -17,5 +16,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTable('groups');
+  return knex.schema.dropTable('group_wallets');
 };

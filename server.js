@@ -15,46 +15,18 @@ app.use(express.json());
 app.set("json spaces", 2);
 app.use(cors());
 
-// Documentation
-
-// Arbitrum
-const ArbitrumController = require('./controllers/web3/arbitrum.controller');
-app.get('/api/arbitrum/account/:account/tokens', ArbitrumController.GET_ARBITRUM_ACCOUNT_TOKENS);
-app.get('/api/arbitrum/account/:account/transactions', ArbitrumController.GET_ARBITRUM_ACCOUNT_TRANSACTIONS);
-
-// Ethereum 
-const EthereumController = require('./controllers/ethereum.controller');
-app.get('/api/ethereum/account/:account/tokens', EthereumController.GET_ETHEREUM_ACCOUNT_TOKENS);
-app.get('/api/ethereum/account/:account/transactions', EthereumController.GET_ETHEREUM_ACCOUNT_TRANSACTIONS);
-app.get('/api/ethereum/token/pairs/:symbol', EthereumController.GET_ETHEREUM_TOKEN_PAIRS);
-app.get('/api/ethereum/token/categories', EthereumController.GET_ETHEREUM_TOKEN_CATEGORIES);
-
-// Users
-const NotificationController = require('./controllers/web3/notification.controller');
-app.post('/api/notification', NotificationController.POST_NOTIFICATION_FROM_ALCHEMY);
-
-// Users
-const WalletController = require('./controllers/app/wallet.controller');
-app.get('/api/wallet', UserController.getUser);
-app.post('/api/wallet', UserController.postUser);
-app.put('/api/wallet', UserController.putUser);
-
-// Groups
-const GroupController = require('./controllers/group.controller');
-app.get('/api/group', GroupController.getAllGroups);
-app.get('/api/group/:id', GroupController.getGroup);
-
-// UI Routes
+// API ROUTES
+app.use(require('./api/eth.getWalletTokens'));
+app.use(require('./api/eth.getWalletTransactions'));
+app.use(require('./api/group.getGroup'));
+app.use(require('./api/notify.postWalletTransaction'));
+app.use(require('./api/wallet.getWallet'));
+app.use(require('./api/wallet.postWallet'));
+app.use(require('./api/wallet.putWallet'));
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(errorHandler);
 app.use(notFoundHandler);
-
-/**
- * GCP Function Code
- 
-exports.server = app;
-*/
 
 // Remove X-Frame-Options to allow for rendering in an Iframe
 app.use((req, res, next) => {

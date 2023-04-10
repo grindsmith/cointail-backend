@@ -6,16 +6,35 @@
 
 ## Versions
 
-### Version 1.0.0
-Description: Initial Project Creation
+### Version 1.1 
+Description: View all wallets in the public group "All Users"
+
+1. API Change
+Eth
+- GET /api/eth/${chain}/${network}/wallet/:wallet/tokens
+- GET /api/eth/${chain}/${network}/wallet/:wallet/transactions
+
+Wallets
+- GET /api/wallet/:wallet
+- GET /api/wallet/:wallet/groups
+- POST /api/wallet
+- PUT /api/wallet
+
+Groups
+- GET /api/group
+- POST /api/wallet
+- PUT /api/wallet
+
+### Version 1.0
+Description: View all wallets in the app
 
 1. API Changes
  - 5 Wallet Endpoint
-    1. GET: /api/wallet
-    2. PUT: /api/wallet
-    3. POST: /api/wallet
-    4. GET: /api/wallet/:wallet/tokens/ethereum
-    5. GET: /api/wallet/:wallet/transactions/ethereum
+    1. GET: /api/user
+    2. PUT: /api/user
+    3. POST: /api/user
+    4. GET: /api/user/:wallet/tokens/ethereum
+    5. GET: /api/user/:wallet/transactions/ethereum
 
  - 1 Token Endpoint
 2. Database Changes

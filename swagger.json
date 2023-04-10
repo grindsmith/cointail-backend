@@ -1,9 +1,9 @@
 {
     "swagger": "2.0",
     "info": {
-      "version": "1.0.0", 
-      "title": "Web3 Sandbox Backend",
-      "description": "APIs: Dexscreener, CoinMarketCap, DefiLlama. SDKs: Alchemy",
+      "version": "1.1", 
+      "title": "CoinTail API",
+      "description": "Track other wallets transactions.",
       "license": {
         "name": "MIT",
         "url": "https://opensource.org/licenses/MIT"
@@ -12,109 +12,32 @@
     "host": "localhost:8080",
     "basePath": "/",
     "paths": {
-        "/api/arbitrum/account/{account}/tokens": {
+        "/api/eth/{chain}/{network}/wallet/{wallet}/tokens": {
             "get": {
-                "summary": "Get user wallet (utilizing the Alchemy SDK)",
-                "description": "Returns the user's wallet balance.",
-                "tags": ["Arbitrum"],
-                "parameters": [
-                    {
-                        "name": "account",
-                        "in": "path",
-                        "description": "The account address to retrieve the account balance for.",
-                        "required": true,
-                        "type": "string",
-                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "The user's wallet balance"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/arbitrum/account/{account}/transactions": {
-            "get": {
-                "summary": "Get transactions by user wallet (utilizing the Alchemy SDK)",
-                "description": "Returns the user's wallet transactions.",
-                "tags": ["Arbitrum"],
-                "parameters": [
-                    {
-                        "name": "account",
-                        "in": "path",
-                        "description": "The account address to retrieve the account transactions for.",
-                        "required": true,
-                        "type": "string",
-                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "The user's wallet balance"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/ethereum/account/{account}/tokens": {
-            "get": {
-                "summary": "Get user wallet (utilizing the Alchemy SDK)",
-                "description": "Returns the user's wallet balance.",
+                "summary": "Get Wallet Tokens on specified chain.",
+                "description": "Returns the wallet's token balance.",
                 "tags": ["Ethereum"],
                 "parameters": [
                     {
-                        "name": "account",
+                        "name": "chain",
                         "in": "path",
-                        "description": "The account address to retrieve the account balance for.",
+                        "description": "The chain that the wallet is on.",
                         "required": true,
                         "type": "string",
-                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "The user's wallet balance"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/ethereum/account/{wallet}/transactions": {
-            "get": {
-                "summary": "Get transactions by user wallet (utilizing the Alchemy SDK)",
-                "description": "Returns the user's wallet transactions.",
-                "tags": ["Ethereum"],
-                "parameters": [
+                        "example": "ethereum"
+                    },
+                    {
+                        "name": "network",
+                        "in": "path",
+                        "description": "The network on the chain the wallet is on.",
+                        "required": true,
+                        "type": "string",
+                        "example": "mainnet"
+                    },
                     {
                         "name": "wallet",
                         "in": "path",
-                        "description": "The wallet address to retrieve the wallet transactions for.",
+                        "description": "The wallet address.",
                         "required": true,
                         "type": "string",
                         "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
@@ -136,19 +59,35 @@
                 }
             }
         },
-        "/api/ethereum/token/pairs/{symbol}": {
+        "/api/eth/{chain}/{network}/wallet/{wallet}/transactions": {
             "get": {
-                "summary": "Get transactions by user wallet (utilizing Dexscreener API)",
+                "summary": "Get transactions by user wallet (utilizing the Alchemy SDK)",
                 "description": "Returns the user's wallet transactions.",
                 "tags": ["Ethereum"],
                 "parameters": [
                     {
-                        "name": "symbol",
+                        "name": "chain",
                         "in": "path",
-                        "description": "The symbol of the token to be retrieved.",
+                        "description": "The chain that the wallet is on.",
                         "required": true,
                         "type": "string",
-                        "example": "WETH, WETH/USDT, 0x5023475230547"
+                        "example": "ethereum"
+                    },
+                    {
+                        "name": "network",
+                        "in": "path",
+                        "description": "The network on the chain the wallet is on.",
+                        "required": true,
+                        "type": "string",
+                        "example": "mainnet"
+                    },
+                    {
+                        "name": "wallet",
+                        "in": "path",
+                        "description": "The wallet address.",
+                        "required": true,
+                        "type": "string",
+                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
                     }
                 ],
                 "responses": {
@@ -167,19 +106,19 @@
                 }
             }
         },
-        "/api/ethereum/token/categories": {
+        "/api/group/{groupId}": {
             "get": {
-                "summary": "Get transactions by user wallet (utilizing Dexscreener API)",
-                "description": "Returns the user's wallet transactions.",
-                "tags": ["Ethereum"],
+                "summary": "Get Group information including group wallets, owner, and details",
+                "description": "Get Group by Group Id",
+                "tags": ["Group"],
                 "parameters": [
                     {
-                        "name": "symbol",
+                        "name": "groupId",
                         "in": "path",
-                        "description": "The symbol of the token to be retrieved.",
+                        "description": "The group id of the requested group.",
                         "required": true,
                         "type": "string",
-                        "example": "WETH, WETH/USDT, 0x5023475230547"
+                        "example": "1"
                     }
                 ],
                 "responses": {
@@ -191,65 +130,6 @@
                                 "balance": {
                                     "type": "number",
                                     "description": "The user's wallet balance"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/user": {
-            "get": {
-                "summary": "Get all Users",
-                "description": "Returns all users.",
-                "tags": ["User"],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "All Users"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "post": {
-                "summary": "Create new user",
-                "description": "Adds the new user to the database.",
-                "tags": ["User"],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "All users"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "summary": "Updates a user",
-                "description": "Updates a user in the database.",
-                "tags": ["User"],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "All users"
                                 }
                             }
                         }
@@ -258,10 +138,36 @@
             }
         },
         "/api/group": {
-            "get": {
-                "summary": "Get all Groups",
-                "description": "Returns all groups.",
+            "post": {
+                "summary": "Create a new Group",
+                "description": "Get Group by Group Id",
                 "tags": ["Group"],
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "body",
+                        "description": "the group name",
+                        "required": true,
+                        "type": "string",
+                        "example": "Wagmi TV"
+                    },
+                    {
+                        "name": "description",
+                        "in": "body",
+                        "description": "the group description",
+                        "required": true,
+                        "type": "string",
+                        "example": "collection of degens"
+                    },
+                    {
+                        "name": "ownerId",
+                        "in": "body",
+                        "description": "the wallet id of the owner of the group",
+                        "required": true,
+                        "type": "string",
+                        "example": "1"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Successful response",
@@ -270,10 +176,105 @@
                             "properties": {
                                 "balance": {
                                     "type": "number",
-                                    "description": "All Groups"
+                                    "description": "The user's wallet balance"
                                 }
                             }
                         }
+                    }
+                }
+            }
+        },
+        "/api/notify": {
+            "post": {
+                "summary": "Recieve a request from Alchemy when a wallet performs a transaction",
+                "description": "Post request from Alchemy about a wallet transaction",
+                "tags": ["Notify"],
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            }
+        },
+        "/api/wallet/{address}": {
+            "get": {
+                "summary": "Get a wallet",
+                "description": "Returns a wallet.",
+                "tags": ["Wallet"],
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "path",
+                        "description": "The address of the wallet.",
+                        "required": true,
+                        "type": "string",
+                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "balance": {
+                                    "type": "number",
+                                    "description": "Wallet"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/wallet": {
+            "post": {
+                "summary": "Create new wallet",
+                "description": "Adds the new wallet to the database.",
+                "tags": ["Wallet"],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "balance": {
+                                    "type": "number",
+                                    "description": "All wallet"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Updates a wallet",
+                "description": "Updates a wallet in the database.",
+                "tags": ["Wallet"],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "balance": {
+                                    "type": "number",
+                                    "description": "All wallet"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/group-wallet": {
+            "post": {
+                "summary": "Create a new groupWallet record",
+                "description": "Returns the new record",
+                "tags": ["Group-Wallet"],
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
                     }
                 }
             }
@@ -281,13 +282,18 @@
     },
     "tags": [
         {
-            "name": "Arbitrum"
-        },{
             "name": "Ethereum"
         },{
-            "name": "User"
-        },{
             "name": "Group"
+        },
+        {
+            "name": "Notify"
+        },
+        {
+            "name": "Wallet"
+        },
+        {
+            "name": "Group-Wallet"
         }
     ],
     "schemes": ["http"],

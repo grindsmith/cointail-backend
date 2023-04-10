@@ -1,7 +1,7 @@
 const bookshelf = require('../database.js');
 
 let Wallets = bookshelf.Model.extend({
-    tableName: 'users',
+    tableName: 'wallets',
     hasTimestamps: true,
 })
 
