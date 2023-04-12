@@ -11,15 +11,15 @@ router.get('/api/eth/:chain/:network/wallet/:wallet/tokens', async function getW
 
   let settings = await Alchemy.setNetworkEndpoint(chain, network, 'getWalletTokens');
 
-  let nativeTokens = await Alchemy.getAccountNativeBalance(settings, wallet);
+  let nativeTokens = await Alchemy.getWalletNativeBalance(settings, wallet);
 
-  let accountTokens = await Alchemy.getAccountERC20Balance(settings, wallet, nativeTokens);
+  let walletTokens = await Alchemy.getWalletERC20Balance(settings, wallet, nativeTokens);
 
-  let nonZeroTokens = await Alchemy.filterAccountTokens(accountTokens);
+  let nonZeroTokens = await Alchemy.filterWalletTokens(walletTokens);
 
-  let tokens = await Alchemy.formatAccountTokens(nonZeroTokens);
+  let tokens = await Alchemy.formatWalletTokens(nonZeroTokens);
 
-  return res.json(tokens);
+  return res.json({ 'tokens': tokens });
 });
 
 module.exports = router;

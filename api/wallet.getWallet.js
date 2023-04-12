@@ -5,12 +5,15 @@ const router = express();
 
 const Wallet = require('../models/wallets');
 const WalletGroups = require('../models/groupWallets');
-const Groups = require('../models/groups');
 
 router.get('/api/wallet/:address', async function getWalletTokens(req,res) {
   console.log('API Endpoint: getWallet');
 
   const { address } = req.params;
+
+  if (!address) {
+    return res.send('Error: Wallet address is undefined.')
+  }
 
   try {
     /**

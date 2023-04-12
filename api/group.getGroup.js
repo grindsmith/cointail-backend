@@ -3,6 +3,9 @@ require('dotenv').config();
 const express = require('express');
 const router = express();
 
+const Alchemy = require('../services/alchemy.services');
+const Frontend = require('../services/frontend.services');
+
 const GroupWallets = require('../models/groupWallets');
 const Groups = require('../models/groups');
 
@@ -26,9 +29,13 @@ router.get('/api/group/:groupId', async function getGroup(req,res) {
 
     let groupWallets = await JSON.parse(JSON.stringify(groupWalletsRaw)).map((item) => item.wallets);
 
+    // format group wallets for Split View UI
+
+    let groupWalletsFinal = await Frontend.formatGroupWallets(groupWallets)
+
     return res.json({
       'info': group,
-      'wallet': groupWallets
+      'wallets': groupWalletsFinal
     });
   } catch (err) {
     if (err.message === 'EmptyResponse') {

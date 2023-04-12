@@ -1,4 +1,6 @@
 const { Alchemy, Network } = require('alchemy-sdk');
+const Axios = require('axios');
+const Moment = require('moment-timezone');
 
 /*
 * 
@@ -175,7 +177,7 @@ async function formatWalletTokens(accountTokens) {
     }
   }
 
-  return formatWalletTokens;
+  return accountTokens;
 }
 
 /**
@@ -187,7 +189,7 @@ async function setNetworkEndpoint(chain, network, functionName) {
   console.log(`Service: setNetworkEndpoint`);
 
   /** SET NETWORK RPC ENDPOINT */
-  const settings = {};
+  let settings = {};
 
   if (chain === 'ethereum' && network === 'mainnet') {
     settings = { apiKey: process.env.ALCHEMY_API_KEY, network: Network.ETH_MAINNET };
