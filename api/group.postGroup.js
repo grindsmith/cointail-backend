@@ -1,30 +1,42 @@
 require('dotenv').config();
 
-const Groups = require('../models/groups');
 const express = require('express');
 const router = express();
+
+const Groups = require('../models/groups');
+const GroupWallets = require('../models/groupWallets');
+const WalletServices = require('../services/wallet.services');
 
 router.post('/api/group', async function postGroup(req, res) {
   console.log('API Endpoint: postGroup');
 
-  const { name, description, ownerId } = req.body;
+  const { name, description, address } = req.body;
+
+  const walletRaw = await WalletServices.findOrCreateWallet(address);
+
+  const wallet = JSON.parse(JSON.stringify(walletRaw));
 
   try {
-    let foundGroup = await Groups.where('name', name).fetch();
+    const newGroupRaw = await new Groups({
+      'name': name,
+      'description': description,
+      'ownerId': wallet.id
+    }).save();
 
-    return res.json({ group: foundGroup });
+    const newGroup = JSON.parse(JSON.stringify(newGroupRaw));
+    
+    await new GroupWallets({
+      'group_id': newGroup.id,
+      'wallet_id': wallet.id
+    }).save();
+
+    let allGroups = await Groups.fetchAll();
+
+    return res.json({ 'groups': allGroups })
   } catch (err) {
-    if (err.message == 'EmptyResponse') {
-      let saved = await new Groups({ 
-        'name': name, 
-        'description': description, 
-        'ownerId': ownerId
-      }).save(); 
+    console.error('Error: Group Creation Issue.', err.message);
 
-      return res.json({ wallet: saved });
-    } else {
-        console.log(err);
-    }
+    return err;
   }
 });
 

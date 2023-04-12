@@ -1,11 +1,9 @@
 const Moment = require('moment');
 
 /**
- * 
- *      SET NETWORK ENDPOINTS
- * 
+ *      formatGroupWalletsForSplitView
  */
-async function formatGroupWallets(groupWallets) {
+async function formatGroupWalletsForSplitView(groupWallets) {
   await groupWallets.forEach((item) => {
     item.key = item.address;
     item.label = item.name;
@@ -17,6 +15,22 @@ async function formatGroupWallets(groupWallets) {
   return groupWallets;
 }
 
+/**
+ *      formatGroupWalletsForSplitView
+ */
+async function formatWalletsForCombobox(wallets) {
+  await wallets.forEach((item) => {
+    item.key = item.address;
+    item.label = item.name;
+    item.subTitle = "0x" + item.address.substr(item.address.length - 6);
+    item.type = 'account';
+  })
+  
+  return wallets;
+}
+
+
 module.exports = {
-  formatGroupWallets
+  formatGroupWalletsForSplitView,
+  formatWalletsForCombobox
 };

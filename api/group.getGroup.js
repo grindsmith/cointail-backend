@@ -29,9 +29,7 @@ router.get('/api/group/:groupId', async function getGroup(req,res) {
 
     let groupWallets = await JSON.parse(JSON.stringify(groupWalletsRaw)).map((item) => item.wallets);
 
-    // format group wallets for Split View UI
-
-    let groupWalletsFinal = await Frontend.formatGroupWallets(groupWallets)
+    let groupWalletsFinal = await Frontend.formatGroupWalletsForSplitView(groupWallets)
 
     return res.json({
       'info': group,
