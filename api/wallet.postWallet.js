@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const router = express();
+const WalletServices = require('../services/wallet.services');
 
 router.post('/api/wallet', async function postWallet(req, res) {
   console.log('API Endpoint: postWallet');
