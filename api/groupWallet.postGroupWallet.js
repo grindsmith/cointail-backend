@@ -4,7 +4,7 @@ const GroupWallets = require('../models/groupWallets');
 const express = require('express');
 const router = express();
 
-router.post('/api/group-wallets', async function postGroupWallet(req, res) {
+router.post('/api/group-wallet', async function postGroupWallet(req, res) {
   console.log('API Endpoint: postGroupWallet');
 
   const { walletId, groupId } = req.body;
