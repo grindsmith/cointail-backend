@@ -31,9 +31,13 @@ const importKnownWallets = async (knownWallets, knownGroups) => {
      */
     await knownWallets.forEach(async (wallet) => {
         try {
-            await new Wallets({ 'address': wallet.address, 'name': wallet.name, 'chain': wallet.chain }).save();
+            await new Wallets({ 
+                'address': wallet.address, 
+                'name': wallet.name, 
+                'chain': wallet.chain 
+            }).save();
         } catch (err) {
-            console.erroer(err);
+            console.error(err);
         }
     });
 
@@ -41,12 +45,12 @@ const importKnownWallets = async (knownWallets, knownGroups) => {
     /**
      * Step 2: Create the Groups
      */
-    let adminRaw = await Wallets.where('id',1).fetch();
-    let admin = JSON.parse(JSON.stringify(adminRaw));
-
     await knownGroups.forEach(async (group) => {
         try {
-            await new Groups({ 'name': group.name, 'description': group.description, 'ownerId': admin.id }).save();
+            await new Groups({ 
+                'name': group.name, 
+                'description': group.description
+            }).save();
         } catch (err) {
             console.error(err);
         }
@@ -65,7 +69,8 @@ const importKnownWallets = async (knownWallets, knownGroups) => {
         await allWallets.forEach(async (wallet) => {
             await new GroupWallets({
                 'wallet_id': wallet.id,
-                'group_id': group.id
+                'group_id': group.id,
+                'group_owner': false
             }).save();
         })
     })

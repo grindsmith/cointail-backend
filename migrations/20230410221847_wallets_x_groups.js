@@ -6,7 +6,8 @@ exports.up = function(knex) {
   return knex.schema.createTable('group_wallets', function (table) {
     table.increments('id').primary();
     table.integer('wallet_id').references('wallets.id');
-    table.integer('group_id').references('groups.id')
+    table.integer('group_id').references('groups.id');
+    table.boolean('group_owner').defaultTo(false);
     table.timestamps(true, true);
   });
 };

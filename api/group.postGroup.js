@@ -20,14 +20,14 @@ router.post('/api/group', async function postGroup(req, res) {
     const newGroupRaw = await new Groups({
       'name': name,
       'description': description,
-      'ownerId': wallet.id
     }).save();
 
     const newGroup = JSON.parse(JSON.stringify(newGroupRaw));
     
     await new GroupWallets({
       'group_id': newGroup.id,
-      'wallet_id': wallet.id
+      'wallet_id': wallet.id,
+      'group_owner': true
     }).save();
 
     let allGroups = await Groups.fetchAll();
