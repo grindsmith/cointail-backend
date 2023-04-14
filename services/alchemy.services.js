@@ -158,26 +158,47 @@ async function formatWalletTransactions(networkSettings, accountAddress, transac
   return Object.values(tmp);
 }
 
-/*
-* 
-*      FORMAT WALLET TOKENS
-* 
-*/
+/** 
+FUNCTION: FORMAT WALLET TOKENS
+
+OVERVIEW
+1. CYCLE THROUGH WALLET TOKENS
+2. REQUEST DEXSCREENER AND SORT FOR THE HIGH VOLUME TRADING PAIR
+  - IF A COIN DOES NOT HAVE ANY TRADING PAIRS, DO NOT INCLUDE
+3. FORMAT AND RETURN THE ARRAY
+**/
 async function formatWalletTokens(accountTokens) {
   console.log(`Service: formatWalletTokens`);
 
+  let formattedWalletTokens = [];
+
   for (let i=0; i < accountTokens.length; i++) {
-    let dexscreener = await Axios.get('https://api.dexscreener.com/latest/dex/search/?q=' + accountTokens[i].symbol + '/USDT');
-    
+    let dexscreener = await Axios.get('https://api.dexscreener.com/latest/dex/search/?q=' + accountTokens[i].contractAddress);
+
     if (dexscreener.data.pairs.length > 0) {
-        accountTokens[i].priceUSD = dexscreener.data.pairs[0].priceUsd;
-        accountTokens[i].priceChange1hr = dexscreener.data.pairs[0].priceChange.h1 + '%';
-        accountTokens[i].priceChange24hr = dexscreener.data.pairs[0].priceChange.h24 + '%';
-        accountTokens[i].url = dexscreener.data.pairs[0].url;
+      let pairs = dexscreener.data.pairs.sort((a, b) => {
+        if(a.volume.h24 > b.volume.h24) {
+          return -1;
+        } else if (a.volume.h24 < b.volume.h24) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+      
+      formattedWalletTokens.push({
+        ...accountTokens[i],
+        priceUSD: pairs[0].priceUsd,
+        priceChange1hr: pairs[0].priceChange.h1 + '%',
+        priceChange24hr: pairs[0].priceChange.h24 + '%',
+        url: pairs[0].url,
+      });
+    } else {
+      console.log(accountTokens[i].name + ": no pairs");
     }
   }
 
-  return accountTokens;
+  return formattedWalletTokens;
 }
 
 /**

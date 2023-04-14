@@ -13,6 +13,7 @@ Description: View all wallets in the public group "All Users"
 - GET: group.getAllGroups
 ##### /api/group/{groupId}
 - GET: group.getGroup
+##### /api/group/
 - POST: group.postGroup
 ##### /api/group-wallet
 - POST: groupWallet.postGroupWallet

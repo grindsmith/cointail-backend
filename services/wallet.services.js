@@ -10,7 +10,7 @@ async function findOrCreateWallet(address) {
         let saved = await new Wallets({ 
             address: address, 
             chain: 'ethereum', 
-            name: 'Placeholder'
+            name: 'New Wallet 0x' + address.substr(address.length - 6),
       }).save(); 
 
       return saved;
