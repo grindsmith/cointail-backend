@@ -173,7 +173,14 @@ async function formatWalletTokens(accountTokens) {
   let formattedWalletTokens = [];
 
   for (let i=0; i < accountTokens.length; i++) {
-    let dexscreener = await Axios.get('https://api.dexscreener.com/latest/dex/search/?q=' + accountTokens[i].contractAddress);
+    let dexscreener;
+    if (accountTokens[i].label === "ETH") {
+      dexscreener = await Axios.get('https://api.dexscreener.com/latest/dex/search/?q=0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640');
+    } else if (accountTokens[i].label === "USDC" || accountTokens[i].label === "USDT") {
+      dexscreener = await Axios.get('https://api.dexscreener.com/latest/dex/search/?q=0x3416cf6c708da44db2624d63ea0aaef7113527c6').catch((err) => console.log(err.message));
+    } else {
+      dexscreener = await Axios.get('https://api.dexscreener.com/latest/dex/search/?q=' + accountTokens[i].contractAddress);
+    }
 
     if (dexscreener.data.pairs.length > 0) {
       let pairs = dexscreener.data.pairs.sort((a, b) => {
@@ -188,6 +195,7 @@ async function formatWalletTokens(accountTokens) {
       
       formattedWalletTokens.push({
         ...accountTokens[i],
+        holdings: '$' + (Math.round(pairs[0].priceUsd * accountTokens[i].walletBalance * 100) / 100),
         priceUSD: pairs[0].priceUsd,
         priceChange1hr: pairs[0].priceChange.h1 + '%',
         priceChange24hr: pairs[0].priceChange.h24 + '%',
