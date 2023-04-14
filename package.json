@@ -4,8 +4,10 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "start": "npx functions-framework --target=server --signature-type=http",
-    "deploy": "gcloud functions deploy app --region=us-central1 --runtime=nodejs16 --entry-point=server",
+    "prestart": "npx knex migrate:latest",
+    "start": "node server.js",
+    "gcloud:start": "npx functions-framework --target=server --signature-type=http",
+    "gcloud:deploy": "gcloud functions deploy app --region=us-central1 --runtime=nodejs16 --entry-point=server",
     "database:update": "npx knex migrate:latest --knexfile database/knexfile.js --env $ENVIRONMENT",
     "database:create": "npx knex migrate:make $NAME --knexfile database/knexfile.js --env local",
     "database:seed": "node database/seeds/domedao.wallets.js",
@@ -15,7 +17,8 @@
   "license": "ISC",
   "devDependencies": {
     "@google-cloud/functions-framework": "^3.1.3",
-    "autocannon": "^7.10.0"
+    "autocannon": "^7.10.0",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "alchemy-sdk": "^2.4.3",
