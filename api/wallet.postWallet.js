@@ -9,7 +9,13 @@ router.post('/api/wallet', async function postWallet(req, res) {
 
   const { address } = req.body;
 
-  const wallet = await WalletServices.findOrCreateWallet(address);
+  // Create Wallet Record
+  const walletRaw = await WalletServices.findOrCreateWallet(address);
+
+  const wallet = JSON.parse(JSON.stringify(walletRaw));
+
+  // Add Newly Create Wallet to All Users Group
+  const groupWallet = await WalletServices.findOrCreateGroupWallet(wallet.id, process.env.GROUP_ID_ALL_USERS);
   
   return res.json({ 'wallet': wallet });
 });

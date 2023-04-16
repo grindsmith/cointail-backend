@@ -13,9 +13,19 @@ router.get('/api/eth/:chain/:network/wallet/:wallet/transactions', async functio
   
   let unformattedTxs = await Alchemy.getWalletTransactions(settings, wallet, 50);
   
+  /** List of Tokens that this wallet has transacted with */
+  let transactedTokens = 
+    await unformattedTxs
+    .map((tx) => tx.asset)
+    .filter((value, index, array) => array.indexOf(value) === index)
+    .map((tx, i) => { return { 'id': i, 'label': tx, 'value': tx}})
+
   let transactions = await Alchemy.formatWalletTransactions(settings, wallet, unformattedTxs, chain);
 
-  return res.json({ 'transactions': transactions});
+  return res.json({ 
+    'transactedTokens': transactedTokens,
+    'transactions': transactions
+  });
 });
 
 module.exports = router;

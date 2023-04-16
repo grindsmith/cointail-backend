@@ -20,6 +20,29 @@ async function findOrCreateWallet(address) {
   }
 }
 
+async function findOrCreateGroupWallet(walletId, groupId) {
+  try {
+    let foundGroupWallet = await GroupWallets.where({
+      'wallet_id': walletId,
+      'group_id': groupId
+    }).fetch();
+
+    return foundGroupWallet
+  } catch (err) {
+    if (err.message == 'EmptyResponse') {
+      let saved = await new GroupWallets({ 
+        'wallet_id': walletId, 
+        'group_id': groupId, 
+      }).save(); 
+
+      return saved;
+    } else {
+        console.log(err);
+    }
+  }
+}
+
 module.exports = {
   findOrCreateWallet,
+  findOrCreateGroupWallet
 }
