@@ -12,7 +12,7 @@ router.get('/api/eth/:chain/:network/wallet/:wallet/transactions', async functio
   let settings = await Alchemy.setNetworkEndpoint(chain, network, 'getWalletTransactions');
   
   let unformattedTxs = await Alchemy.getWalletTransactions(settings, wallet, 50);
-  
+
   /** List of Tokens that this wallet has transacted with */
   let transactedTokens = 
     await unformattedTxs

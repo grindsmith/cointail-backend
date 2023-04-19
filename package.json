@@ -6,6 +6,7 @@
   "scripts": {
     "prestart": "npx knex migrate:latest",
     "start": "node server.js",
+    "local:start": "nodemon server.js",
     "gcloud:start": "npx functions-framework --target=server --signature-type=http",
     "gcloud:deploy": "gcloud functions deploy app --region=us-central1 --runtime=nodejs16 --entry-point=server",
     "database:update": "npx knex migrate:latest --knexfile database/knexfile.js --env $ENVIRONMENT",
@@ -18,6 +19,7 @@
   "devDependencies": {
     "@google-cloud/functions-framework": "^3.1.3",
     "autocannon": "^7.10.0",
+    "nodemon": "^2.0.22",
     "typescript": "^5.0.4"
   },
   "dependencies": {
@@ -31,6 +33,7 @@
     "knex": "^2.4.2",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.41",
+    "nodemailer": "^6.9.1",
     "path": "^0.12.7",
     "pg": "^8.9.0",
     "swagger-ui-express": "^4.6.2",

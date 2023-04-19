@@ -1,3 +1,21 @@
+# Factory Contracts
+create and track smart contracts that it creates
+
+# Next.js
+3 Types of Rendering
+- Server-Side Rendering
+- Static Site Generation
+- Client Side Rendering
+
+1. Main Benefits
+- Better SEO
+- Speeds up the initial render
+
+New Next.js Updates
+- Server Components
+- HTML Streaming
+- Rendering on the Edge
+
 # Solana
 ## Anchor Framework
 - built by Project Serum

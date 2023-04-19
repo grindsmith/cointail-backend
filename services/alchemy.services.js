@@ -80,7 +80,7 @@ async function getWalletTransactions(networkSettings, accountAddress, numberOfTr
     order: 'desc'
   });
 
-  let txBoth = assetTransfersFrom.transfers.concat(assetTransfersTo.transfers)
+  let txBoth = assetTransfersFrom.transfers.concat(assetTransfersTo.transfers);
   
   return txBoth.sort((a,b) => {
     if (new Date(a.metadata.blockTimestamp).getTime() < new Date(b.metadata.blockTimestamp).getTime()) {
@@ -131,8 +131,18 @@ async function formatWalletTransactions(networkSettings, accountAddress, transac
       
       tmp[txHash].contractAddressTwo = transactions[i].rawContract.address;
     } else {
-      tmp[txHash] = transactions[i]
+      let otherParty = (accountAddress.toUpperCase() === transactions[i].from.toUpperCase() ? transactions[i].to : transactions[i].from);
       
+      let acctOrCode = await alchemy.core.getCode(otherParty);
+
+      if (acctOrCode !== '0x') {
+        console.log(acctOrCode);
+      }
+
+      tmp[txHash] = transactions[i];
+
+      tmp[txHash].interactWith = (acctOrCode === '0x' ? 'Wallet' : 'Contract');
+
       tmp[txHash].chain = chain;
       
       tmp[txHash].value = transactions[i].value?.toFixed(5) || 0.00;

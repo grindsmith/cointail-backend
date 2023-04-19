@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express();
 
-router.get('/api/notify', async function postWalletTransaction(req,res) {
+router.post('/api/notify', async function postWalletTransaction(req,res) {
   console.log('API Endpoints: postWalletTransaction');
 
   console.log(req.body);
