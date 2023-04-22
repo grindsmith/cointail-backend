@@ -50,4 +50,8 @@ async function sendEmail(recipient) {
   }
 }
 
-sendEmail('esmith.wagmi@gmail.com');
+// sendEmail('esmith.wagmi@gmail.com');
+
+module.exports = {
+  sendEmail
+};

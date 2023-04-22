@@ -1,5 +1,5 @@
 runtime: nodejs18
-service: web3-sandbox-backend
+service: cointail-backend
 env_variables: 
   ALCHEMY_API_KEY: zBgufsv4Lyae5NcXbpjlk4ewQcPm0eib
   COINMARKETCAP_API_KEY: 57e29a30-ea7d-488c-aef5-a97c260270ce

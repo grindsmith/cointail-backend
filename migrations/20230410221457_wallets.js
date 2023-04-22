@@ -8,6 +8,7 @@ exports.up = function(knex) {
     table.string('address').unique();
     table.string('name');
     table.string('chain');
+    table.string('email');
     table.timestamps(true, true);
 });
 };

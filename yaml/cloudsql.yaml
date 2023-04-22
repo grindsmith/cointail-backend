@@ -1,0 +1,27 @@
+steps:
+  # Install Node.js dependencies
+  - id: yarn\-install
+    name: gcr.io/cloud-builders/yarn
+    waitFor: ["-"]
+
+  # Install Cloud SQL proxy
+  - id: proxy-install
+    name: gcr.io/cloud-builders/yarn
+    entrypoint: sh
+    args:
+      - "-c"
+      - "wget https://storage.googleapis.com/cloudsql-proxy/v1.20.1/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy && chmod +x cloud_sql_proxy"
+    waitFor: ["-"]
+
+  # Migrate database schema to the latest version
+  # https://knexjs.org/#Migrations-CLI
+  - id: migrate
+    name: gcr.io/cloud-builders/yarn
+    entrypoint: sh
+    args:
+      - "-c"
+      - "(./cloud_sql_proxy -dir=/cloudsql -instances=<CLOUD_SQL_CONNECTION> & sleep 2) && yarn run knex migrate:latest"
+    timeout: "1200s"
+    waitFor: ["yarn-install", "proxy-install"]
+
+timeout: "1200s"
