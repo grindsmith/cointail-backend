@@ -15,18 +15,28 @@ app.use(express.json());
 app.set("json spaces", 2);
 app.use(cors());
 
-// API ROUTES
-app.use(require('./api/eth.getWalletTokens'));
-app.use(require('./api/eth.getWalletTransactions'));
-app.use(require('./api/group.getAllGroups'));
-app.use(require('./api/group.getGroup'));
-app.use(require('./api/group.postGroup'));
-app.use(require('./api/groupWallet.postGroupWallet'));
-app.use(require('./api/notify.postWalletTransaction'));
-app.use(require('./api/wallet.getAllWallets'));
-app.use(require('./api/wallet.getWallet'));
-app.use(require('./api/wallet.postWallet'));
-app.use(require('./api/wallet.putWallet'));
+// Wallet Routes
+const WalletsController = require('./controllers/wallets.controller');
+app.get('/api/wallet', WalletsController.getAllWallets);
+app.get('/api/wallet/:address', WalletsController.getWallet);
+app.post('/api/wallet', WalletsController.postWallet);
+app.put('/api/wallet', WalletsController.putWallet);
+app.get('/api/wallet/tokens', WalletsController.getWalletTokens);
+app.get('/api/wallet/transactions', WalletsController.getWalletTransactions);
+
+// Group Routes
+const GroupsController = require('./controllers/groups.controller');
+app.get('/api/group', GroupsController.getAllGroups);
+app.get('/api/group/:groupId', GroupsController.getGroup);
+app.post('/api/group', GroupsController.postGroup);
+app.post('/api/group-wallet', GroupsController.postGroupWallet);
+
+// Transaction Routes
+const TransactionsController = require('./controllers/transactions.controller');
+app.get('/api/transaction', TransactionsController.getTransactions);
+app.post('/api/transaction', TransactionsController.postTransaction);
+
+// Swagger Routes
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(errorHandler);

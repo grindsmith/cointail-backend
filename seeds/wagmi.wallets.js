@@ -3,17 +3,21 @@ const Groups = require('../models/groups');
 const GroupWallets = require('../models/groupWallets');
 
 const wallets = [{
-    'address': '0x8a76eA819F06b974b75f22C63727c7335f7ebdc3',
+    'address': '0x8a76ea819f06b974b75f22c63727c7335f7ebdc3',
     'name': 'Evan',
-    'chain': 'ethereum'
+    'chain': 'ETH_MAINNET'
 },{
-    'address': '0xadf27ee1A23D5Df947d37CF65f1a10872e03d333',
+    'address': '0xadf27ee1a23d5df947d37cf65f1a10872e03d333',
     'name': 'Soham',
-    'chain': 'ethereum'
+    'chain': 'ETH_MAINNET'
 },{
-    'address': '0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA',
+    'address': '0xebe035da5df98e8297d31cfd1c249732a6d6d3ba',
     'name': 'Evan',
-    'chain': 'ethereum'
+    'chain': 'ETH_MAINNET'
+},{
+    'address': '0x6ad20f932777ddd528bb1d9721f18ada94c256db',
+    'name': 'Evan - Test MetaMask',
+    'chain': 'ETH_MAINNET'
 }];
 
 const groups = [{

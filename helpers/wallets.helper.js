@@ -42,7 +42,18 @@ async function findOrCreateGroupWallet(walletId, groupId) {
   }
 }
 
+async function findWalletInArrayByAddress (wallets, address) {
+  for (let i = 0; i < wallets.length; i++)
+  {
+    if (wallets[i].address === address) 
+    {
+      return wallets[i];
+    }
+  }
+}
+
 module.exports = {
   findOrCreateWallet,
-  findOrCreateGroupWallet
+  findOrCreateGroupWallet,
+  findWalletInArrayByAddress
 }

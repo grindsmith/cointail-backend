@@ -135,10 +135,6 @@ async function formatWalletTransactions(networkSettings, accountAddress, transac
       
       let acctOrCode = await alchemy.core.getCode(otherParty);
 
-      if (acctOrCode !== '0x') {
-        console.log(acctOrCode);
-      }
-
       tmp[txHash] = transactions[i];
 
       tmp[txHash].interactWith = (acctOrCode === '0x' ? 'Wallet' : 'Contract');
@@ -153,10 +149,14 @@ async function formatWalletTransactions(networkSettings, accountAddress, transac
       
       tmp[txHash].contractAddress = transactions[i].rawContract.address;
 
-      if (transactions[i].to.toUpperCase() === accountAddress.toUpperCase()) {
+      if (transactions[i].to.toUpperCase() === accountAddress.toUpperCase() && tmp[txHash].interactWith === "Wallet") {
         tmp[txHash].action = "Received";
-      } else if (transactions[i].from.toUpperCase() === accountAddress.toUpperCase()) {
+      } else if (transactions[i].from.toUpperCase() === accountAddress.toUpperCase() && tmp[txHash].interactWith === "Wallet") {
         tmp[txHash].action = "Sent";
+      } else if (transactions[i].from.toUpperCase() === accountAddress.toUpperCase() && tmp[txHash].interactWith === "Contract") {
+        tmp[txHash].action = "Stake";
+      } else if (transactions[i].to.toUpperCase() === accountAddress.toUpperCase() && tmp[txHash].interactWith === "Contract") {
+        tmp[txHash].action = "Unstake";
       }
 
       let tx = await alchemy.core.getTransactionReceipt(txHash);
@@ -205,7 +205,7 @@ async function formatWalletTokens(accountTokens) {
       
       formattedWalletTokens.push({
         ...accountTokens[i],
-        holdings: '$' + (Math.round(pairs[0].priceUsd * accountTokens[i].walletBalance * 100) / 100),
+        holdings: (Math.round(pairs[0].priceUsd * accountTokens[i].walletBalance * 100) / 100),
         priceUSD: pairs[0].priceUsd,
         priceChange1hr: pairs[0].priceChange.h1 + '%',
         priceChange24hr: pairs[0].priceChange.h24 + '%',

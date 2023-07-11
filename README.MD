@@ -1,5 +1,9 @@
 # Web3 Sandbox Backend 
 
+insert into wallets ("address","name","chain","email") values ("0x6Ad20f932777ddd528bB1D9721f18adA94C256dB","Evan - Test MetaMask","ethereum","esmith.wagmi@gmail.com");
+
+insert into wallets (address, name, chain, email) values ('0x6Ad20f932777ddd528bB1D9721f18adA94C256dB','Evan - Test MetaMask','ethereum','esmith.wagmi@gmail.com');
+
 ## Versions
 ### Version 1.1 [ACTIVE]
 Description: View all wallets in the public group "All Users"

@@ -7,9 +7,8 @@
     "prestart": "npx knex migrate:latest",
     "test": "jest",
     "start": "node server.js",
-    "local:start": "nodemon server.js",
-    "gcloud:start": "npx functions-framework --target=server --signature-type=http",
-    "gcloud:deploy": "gcloud functions deploy app --region=us-central1 --runtime=nodejs16 --entry-point=server",
+    "develop": "nodemon server.js",
+    "gcloud:deploy": "gcloud app deploy --appyaml=yaml/dev.yaml",
     "database:update": "npx knex migrate:latest --knexfile database/knexfile.js --env $ENVIRONMENT",
     "database:create": "npx knex migrate:make $NAME --knexfile database/knexfile.js --env local",
     "database:seed": "node database/seeds/domedao.wallets.js",
@@ -39,6 +38,7 @@
     "path": "^0.12.7",
     "pg": "^8.9.0",
     "swagger-ui-express": "^4.6.2",
+    "twilio": "^4.10.0",
     "web3": "^1.8.2"
   }
 }
