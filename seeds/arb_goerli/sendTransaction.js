@@ -2,13 +2,10 @@ require('dotenv').config();
 
 const { Alchemy, Network, Wallet, Utils } = require("alchemy-sdk");
 
-// Configures the Alchemy SDK
 const config = {
   apiKey: process.env.ALCHEMY_API_KEY,
   network: Network.ARB_GOERLI,
 };
-
-console.log(config)
 
 const alchemy = new Alchemy(config);
 const wallet = new Wallet(process.env.COINBASE_PRIVATE_KEY);
@@ -24,7 +21,7 @@ const main = async (event) => {
       maxFeePerGas: Utils.parseUnits("20", "gwei"),
       nonce: await alchemy.core.getTransactionCount(wallet.getAddress()),
       type: 2,
-      chainId: 421613, // Corresponds to ETH_GOERLI
+      chainId: 421613, // Corresponds to ARB_GOERLI
     };
 
     const rawTransaction = await wallet.signTransaction(transaction);

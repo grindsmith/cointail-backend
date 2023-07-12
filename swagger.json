@@ -12,11 +12,101 @@
     "host": "localhost:8080",
     "basePath": "/",
     "paths": {
-        "/api/eth/{chain}/{network}/wallet/{wallet}/tokens": {
+        "/api/wallet": {
             "get": {
                 "summary": "Get Wallet Tokens on specified chain.",
                 "description": "Returns the wallet's token balance.",
-                "tags": ["Ethereum"],
+                "tags": ["Wallet"],
+                "parameters": [
+                    {
+                        "name": "address",
+                        "in": "query",
+                        "description": "The wallet address.",
+                        "required": true,
+                        "type": "string",
+                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
+                    },
+                    {
+                        "name": "chain",
+                        "in": "query",
+                        "description": "The chain that the wallet is on.",
+                        "required": true,
+                        "type": "string",
+                        "example": "ethereum"
+                    },
+                    {
+                        "name": "network",
+                        "in": "query",
+                        "description": "The network on the chain the wallet is on.",
+                        "required": true,
+                        "type": "string",
+                        "example": "mainnet"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "balance": {
+                                    "type": "number",
+                                    "description": "The user's wallet balance"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "summary": "Get Wallet Tokens on specified chain.",
+                "description": "Returns the wallet's token balance.",
+                "tags": ["Wallet"],
+                "parameters": [
+                    {
+                        "name": "chain",
+                        "in": "path",
+                        "description": "The chain that the wallet is on.",
+                        "required": true,
+                        "type": "string",
+                        "example": "ethereum"
+                    },
+                    {
+                        "name": "network",
+                        "in": "path",
+                        "description": "The network on the chain the wallet is on.",
+                        "required": true,
+                        "type": "string",
+                        "example": "mainnet"
+                    },
+                    {
+                        "name": "wallet",
+                        "in": "path",
+                        "description": "The wallet address.",
+                        "required": true,
+                        "type": "string",
+                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "balance": {
+                                    "type": "number",
+                                    "description": "The user's wallet balance"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "summary": "Get Wallet Tokens on specified chain.",
+                "description": "Returns the wallet's token balance.",
+                "tags": ["Wallet"],
                 "parameters": [
                     {
                         "name": "chain",
@@ -59,11 +149,105 @@
                 }
             }
         },
-        "/api/eth/{chain}/{network}/wallet/{wallet}/transactions": {
+        "/api/wallet/{address}": {
+            "get": {
+                "summary": "Get Wallet Tokens on specified chain.",
+                "description": "Returns the wallet's token balance.",
+                "tags": ["Wallet"],
+                "parameters": [
+                    {
+                        "name": "chain",
+                        "in": "path",
+                        "description": "The chain that the wallet is on.",
+                        "required": true,
+                        "type": "string",
+                        "example": "ethereum"
+                    },
+                    {
+                        "name": "network",
+                        "in": "path",
+                        "description": "The network on the chain the wallet is on.",
+                        "required": true,
+                        "type": "string",
+                        "example": "mainnet"
+                    },
+                    {
+                        "name": "wallet",
+                        "in": "path",
+                        "description": "The wallet address.",
+                        "required": true,
+                        "type": "string",
+                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "balance": {
+                                    "type": "number",
+                                    "description": "The user's wallet balance"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/wallet/tokens": {
+            "get": {
+                "summary": "Get Wallet Tokens on specified chain.",
+                "description": "Returns the wallet's token balance.",
+                "tags": ["Wallet"],
+                "parameters": [
+                    {
+                        "name": "chain",
+                        "in": "path",
+                        "description": "The chain that the wallet is on.",
+                        "required": true,
+                        "type": "string",
+                        "example": "ethereum"
+                    },
+                    {
+                        "name": "network",
+                        "in": "path",
+                        "description": "The network on the chain the wallet is on.",
+                        "required": true,
+                        "type": "string",
+                        "example": "mainnet"
+                    },
+                    {
+                        "name": "wallet",
+                        "in": "path",
+                        "description": "The wallet address.",
+                        "required": true,
+                        "type": "string",
+                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "balance": {
+                                    "type": "number",
+                                    "description": "The user's wallet balance"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/wallet/transactions": {
             "get": {
                 "summary": "Get transactions by user wallet (utilizing the Alchemy SDK)",
                 "description": "Returns the user's wallet transactions.",
-                "tags": ["Ethereum"],
+                "tags": ["Wallet"],
                 "parameters": [
                     {
                         "name": "chain",
@@ -184,19 +368,7 @@
                 }
             }
         },
-        "/api/notify": {
-            "post": {
-                "summary": "Recieve a request from Alchemy when a wallet performs a transaction",
-                "description": "Post request from Alchemy about a wallet transaction",
-                "tags": ["Notify"],
-                "responses": {
-                    "200": {
-                        "description": "Successful response"
-                    }
-                }
-            }
-        },
-        "/api/wallet/{address}": {
+        "/api/transaction": {
             "get": {
                 "summary": "Get a wallet",
                 "description": "Returns a wallet.",
@@ -225,44 +397,14 @@
                         }
                     }
                 }
-            }
-        },
-        "/api/wallet": {
-            "post": {
-                "summary": "Create new wallet",
-                "description": "Adds the new wallet to the database.",
-                "tags": ["Wallet"],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "All wallet"
-                                }
-                            }
-                        }
-                    }
-                }
             },
-            "put": {
-                "summary": "Updates a wallet",
-                "description": "Updates a wallet in the database.",
-                "tags": ["Wallet"],
+            "post": {
+                "summary": "Recieve a request from Alchemy when a wallet performs a transaction",
+                "description": "Post request from Alchemy about a wallet transaction",
+                "tags": ["Notify"],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "All wallet"
-                                }
-                            }
-                        }
+                        "description": "Successful response"
                     }
                 }
             }
@@ -282,18 +424,13 @@
     },
     "tags": [
         {
-            "name": "Ethereum"
-        },{
-            "name": "Group"
-        },
-        {
-            "name": "Notify"
-        },
-        {
             "name": "Wallet"
         },
         {
-            "name": "Group-Wallet"
+            "name": "Group"
+        },
+        {
+            "name": "Transaction"
         }
     ],
     "schemes": ["http"],

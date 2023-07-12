@@ -8,6 +8,8 @@ const FrontendServices = require('../services/frontend.services');
 // Database Models
 const Wallets = require('../models/wallets');
 const WalletGroups = require('../models/groupWallets');
+const WalletFollowers = require('../models/walletFollowers');
+const WalletTransactions = require('../models/walletTransactions');
 
 module.exports = {
   getAllWallets: async function (req,res) {
@@ -49,7 +51,7 @@ module.exports = {
       /**
        * STEP 1: RETRIEVE INFO ABOUT A SPECIFIC WALLET
        */
-      const walletRaw = await Wallet.where('address', address).fetch();
+      const walletRaw = await Wallets.where('address', address.toLowerCase()).fetch();
   
       let wallet = JSON.parse(JSON.stringify(walletRaw));
   
@@ -57,12 +59,39 @@ module.exports = {
        * STEP 2: RETRIEVE GROUPS RECORDS
        */
       let walletGroupsRaw = await WalletGroups.where('wallet_id', wallet.id).fetchAll({withRelated: ['groups']});
-  
+
       let walletGroups = await JSON.parse(JSON.stringify(walletGroupsRaw)).map((item) => item.groups);
-  
+
+      /** 
+       * STEP 3: RETRIEVE FOLLOWING WALLETS
+       */
+      let followingRaw = await WalletFollowers.where('follower_id', wallet.id).fetchAll();
+
+      let followingIds = JSON.parse(JSON.stringify(followingRaw)).map((following) => following.id);
+
+      let followingWallets = await Wallets.where('id', 'in', followingIds).fetchAll();
+
+      /** 
+       * STEP 4: RETRIEVE FOLLOWER WALLETS
+       */
+      let followersRaw = await WalletFollowers.where('wallet_id', wallet.id).fetchAll();
+
+      let followerIds = JSON.parse(JSON.stringify(followersRaw)).map((follower) => follower.id);
+
+      let followerWallets = await Wallets.where('id', 'in', followerIds).fetchAll();
+
+      /** 
+       * STEP 4: RETRIEVE TRANSACTION RECORDS FOR FOLLOWING WALLETS
+       */
+      let walletTransactions = await WalletTransactions.where('wallet_id','in', followingIds).fetchAll();
+
+      // DO SOMETHING
+
       return res.json({
         'info': wallet,
-        'groups': walletGroups
+        'groups': walletGroups || [],
+        'followers': JSON.parse(JSON.stringify(followerWallets)) || [],
+        'following': JSON.parse(JSON.stringify(followingWallets)) || []
       });
     } catch (err) {
       if (err.message === 'EmptyResponse') {
