@@ -16,31 +16,15 @@
             "get": {
                 "summary": "Get Wallet Tokens on specified chain.",
                 "description": "Returns the wallet's token balance.",
-                "tags": ["Wallet"],
+                "tags": ["Wallets"],
                 "parameters": [
                     {
                         "name": "address",
                         "in": "query",
                         "description": "The wallet address.",
-                        "required": true,
+                        "required": "false",
                         "type": "string",
                         "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
-                    },
-                    {
-                        "name": "chain",
-                        "in": "query",
-                        "description": "The chain that the wallet is on.",
-                        "required": true,
-                        "type": "string",
-                        "example": "ethereum"
-                    },
-                    {
-                        "name": "network",
-                        "in": "query",
-                        "description": "The network on the chain the wallet is on.",
-                        "required": true,
-                        "type": "string",
-                        "example": "mainnet"
                     }
                 ],
                 "responses": {
@@ -49,9 +33,21 @@
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "The user's wallet balance"
+                                "info": {
+                                    "type": "array",
+                                    "description": "Info About the Wallet"
+                                },
+                                "groups": {
+                                    "type": "array",
+                                    "description": "Wallet Groups"
+                                },
+                                "followers": {
+                                    "type": "array",
+                                    "description": "Which Wallets follow this Wallet"
+                                },
+                                "following": {
+                                    "type": "array",
+                                    "description": "Which Wallets this Wallet Follows"
                                 }
                             }
                         }
@@ -59,44 +55,26 @@
                 }
             },
             "post": {
-                "summary": "Get Wallet Tokens on specified chain.",
-                "description": "Returns the wallet's token balance.",
-                "tags": ["Wallet"],
-                "parameters": [
-                    {
-                        "name": "chain",
-                        "in": "path",
-                        "description": "The chain that the wallet is on.",
-                        "required": true,
-                        "type": "string",
-                        "example": "ethereum"
-                    },
-                    {
-                        "name": "network",
-                        "in": "path",
-                        "description": "The network on the chain the wallet is on.",
-                        "required": true,
-                        "type": "string",
-                        "example": "mainnet"
-                    },
-                    {
-                        "name": "wallet",
-                        "in": "path",
-                        "description": "The wallet address.",
-                        "required": true,
-                        "type": "string",
-                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
-                    }
-                ],
+                "summary": "Create a Wallet",
+                "description": "Create a new Wallet",
+                "tags": ["Wallets"],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
+                        "description": "Successful Created",
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "The user's wallet balance"
+                                "name": {
+                                    "type": "string"
+                                },
+                                "address": {
+                                    "type": "string"
+                                },
+                                "chain": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
                                 }
                             }
                         }
@@ -106,54 +84,7 @@
             "put": {
                 "summary": "Get Wallet Tokens on specified chain.",
                 "description": "Returns the wallet's token balance.",
-                "tags": ["Wallet"],
-                "parameters": [
-                    {
-                        "name": "chain",
-                        "in": "path",
-                        "description": "The chain that the wallet is on.",
-                        "required": true,
-                        "type": "string",
-                        "example": "ethereum"
-                    },
-                    {
-                        "name": "network",
-                        "in": "path",
-                        "description": "The network on the chain the wallet is on.",
-                        "required": true,
-                        "type": "string",
-                        "example": "mainnet"
-                    },
-                    {
-                        "name": "wallet",
-                        "in": "path",
-                        "description": "The wallet address.",
-                        "required": true,
-                        "type": "string",
-                        "example": "0xEBe035dA5DF98E8297D31cFD1c249732a6d6d3bA"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "The user's wallet balance"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/wallet/{address}": {
-            "get": {
-                "summary": "Get Wallet Tokens on specified chain.",
-                "description": "Returns the wallet's token balance.",
-                "tags": ["Wallet"],
+                "tags": ["Wallets"],
                 "parameters": [
                     {
                         "name": "chain",
@@ -200,7 +131,7 @@
             "get": {
                 "summary": "Get Wallet Tokens on specified chain.",
                 "description": "Returns the wallet's token balance.",
-                "tags": ["Wallet"],
+                "tags": ["Wallets"],
                 "parameters": [
                     {
                         "name": "chain",
@@ -247,7 +178,7 @@
             "get": {
                 "summary": "Get transactions by user wallet (utilizing the Alchemy SDK)",
                 "description": "Returns the user's wallet transactions.",
-                "tags": ["Wallet"],
+                "tags": ["Wallets"],
                 "parameters": [
                     {
                         "name": "chain",
@@ -290,15 +221,15 @@
                 }
             }
         },
-        "/api/group/{groupId}": {
+        "/api/group": {
             "get": {
                 "summary": "Get Group information including group wallets, owner, and details",
                 "description": "Get Group by Group Id",
-                "tags": ["Group"],
+                "tags": ["Groups"],
                 "parameters": [
                     {
                         "name": "groupId",
-                        "in": "path",
+                        "in": "query",
                         "description": "The group id of the requested group.",
                         "required": true,
                         "type": "string",
@@ -307,25 +238,17 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "The user's wallet balance"
-                                }
-                            }
-                        }
+                        "description": "Successful"
+                    },
+                    "500": {
+                        "description": "Failure"
                     }
                 }
-            }
-        },
-        "/api/group": {
+            },
             "post": {
                 "summary": "Create a new Group",
                 "description": "Get Group by Group Id",
-                "tags": ["Group"],
+                "tags": ["Groups"],
                 "parameters": [
                     {
                         "name": "name",
@@ -368,15 +291,27 @@
                 }
             }
         },
+        "/api/group/wallet": {
+            "post": {
+                "summary": "Create a new Group Wallet.",
+                "description": "Adds a wallet to a group.",
+                "tags": ["Groups"],
+                "responses": {
+                    "200": {
+                        "description": "Successful response"
+                    }
+                }
+            }
+        },
         "/api/transaction": {
             "get": {
-                "summary": "Get a wallet",
-                "description": "Returns a wallet.",
-                "tags": ["Wallet"],
+                "summary": "Endpoint to get Transactions associated with a Wallet.",
+                "description": "Return Wallet Transactions.",
+                "tags": ["Transactions / Notifications"],
                 "parameters": [
                     {
                         "name": "address",
-                        "in": "path",
+                        "in": "query",
                         "description": "The address of the wallet.",
                         "required": true,
                         "type": "string",
@@ -385,38 +320,26 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Successful response",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "balance": {
-                                    "type": "number",
-                                    "description": "Wallet"
-                                }
-                            }
-                        }
+                        "description": "Successful"
+                    },
+                    "500": {
+                        "description": "Failure"
                     }
                 }
             },
             "post": {
                 "summary": "Recieve a request from Alchemy when a wallet performs a transaction",
                 "description": "Post request from Alchemy about a wallet transaction",
-                "tags": ["Notify"],
+                "tags": ["Transactions / Notifications"],
+                "requestBody": {
+                    "required": true
+                },
                 "responses": {
                     "200": {
-                        "description": "Successful response"
-                    }
-                }
-            }
-        },
-        "/api/group-wallet": {
-            "post": {
-                "summary": "Create a new groupWallet record",
-                "description": "Returns the new record",
-                "tags": ["Group-Wallet"],
-                "responses": {
-                    "200": {
-                        "description": "Successful response"
+                        "description": "Successful"
+                    },
+                    "500": {
+                        "description": "Failure"
                     }
                 }
             }
@@ -424,13 +347,11 @@
     },
     "tags": [
         {
-            "name": "Wallet"
-        },
-        {
-            "name": "Group"
-        },
-        {
-            "name": "Transaction"
+            "name": "Wallets"
+        },{
+            "name": "Groups"
+        },{
+            "name": "Transactions / Notifications"
         }
     ],
     "schemes": ["http"],

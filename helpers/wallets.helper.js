@@ -1,4 +1,5 @@
 const Wallets = require('../models/wallets');
+const WalletFollowers = require('../models/walletFollowers');
 
 async function findOrCreateWallet(address) {
   try {
@@ -52,8 +53,20 @@ async function findWalletInArrayByAddress (wallets, address) {
   }
 }
 
+async function findWalletFollowers (field, walletId) {
+  let walletFollowers = await WalletFollowers.where(field, walletId).fetchAll();
+
+  let walletFollowerIds = JSON.parse(JSON.stringify(walletFollowers)).map((followers) => followers.id);
+
+  let followerWallets = await Wallets.where('id', 'in', walletFollowerIds).fetchAll();
+
+  return JSON.parse(JSON.stringify(followerWallets)) || [];
+}
+
+
 module.exports = {
   findOrCreateWallet,
   findOrCreateGroupWallet,
-  findWalletInArrayByAddress
+  findWalletInArrayByAddress,
+  findWalletFollowers
 }

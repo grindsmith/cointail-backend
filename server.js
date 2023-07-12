@@ -17,8 +17,7 @@ app.use(cors());
 
 // Wallet Routes
 const WalletsController = require('./controllers/wallets.controller');
-app.get('/api/wallet', WalletsController.getAllWallets);
-app.get('/api/wallet/:address', WalletsController.getWallet);
+app.get('/api/wallet', WalletsController.getWallets);
 app.post('/api/wallet', WalletsController.postWallet);
 app.put('/api/wallet', WalletsController.putWallet);
 app.get('/api/wallet/tokens', WalletsController.getWalletTokens);
@@ -29,7 +28,7 @@ const GroupsController = require('./controllers/groups.controller');
 app.get('/api/group', GroupsController.getAllGroups);
 app.get('/api/group/:groupId', GroupsController.getGroup);
 app.post('/api/group', GroupsController.postGroup);
-app.post('/api/group-wallet', GroupsController.postGroupWallet);
+app.post('/api/group/wallet', GroupsController.postGroupWallet);
 
 // Transaction Routes
 const TransactionsController = require('./controllers/transactions.controller');

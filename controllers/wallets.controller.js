@@ -8,99 +8,63 @@ const FrontendServices = require('../services/frontend.services');
 // Database Models
 const Wallets = require('../models/wallets');
 const WalletGroups = require('../models/groupWallets');
-const WalletFollowers = require('../models/walletFollowers');
 const WalletTransactions = require('../models/walletTransactions');
 
 module.exports = {
-  getAllWallets: async function (req,res) {
-    console.log('API Endpoints: getAllWallets');
-    
-    try {
-      /**
-       * STEP 1: RETRIEVE INFO ABOUT A SPECIFIC WALLET
-       */
-      const allWalletsRaw = await Wallets.fetchAll();
-  
-      const allWallets = JSON.parse(JSON.stringify(allWalletsRaw));
-  
-      const allWalletsFinal = await FrontendServices.formatWalletsForCombobox(allWallets);
-  
-      return res.json({
-        'allWallets': allWalletsFinal
-      });
-    } catch (err) {
-      if (err.message === 'EmptyResponse') {
-        return res.send('No Groups.')
-      } else {
-        console.error(err);
-  
-        return res.sendStatus(500);
-      }
-    }
-  },
-  getWallet: async function (req,res) {
+  /**
+   * STEP 1: DONE
+   * STEP 2: DONE
+   * STEP 3: DONE
+   * STEP 4: DONE
+   * STEP 5: INCOMPLETE
+   */
+  getWallets: async function (req,res) {
     console.log('API Endpoint: getWallet');
   
-    const { address } = req.params;
-  
-    if (!address) {
-      return res.send('Error: Wallet address is undefined.')
-    }
+    const { address } = req.query;
   
     try {
-      /**
-       * STEP 1: RETRIEVE INFO ABOUT A SPECIFIC WALLET
-       */
-      const walletRaw = await Wallets.where('address', address.toLowerCase()).fetch();
-  
-      let wallet = JSON.parse(JSON.stringify(walletRaw));
-  
-      /** 
-       * STEP 2: RETRIEVE GROUPS RECORDS
-       */
-      let walletGroupsRaw = await WalletGroups.where('wallet_id', wallet.id).fetchAll({withRelated: ['groups']});
+      if (address) {
+        /** STEP 1: RETRIEVE INFO ABOUT A SPECIFIC WALLET */
+        const walletRaw = await Wallets.where('address', address.toLowerCase()).fetch();
 
-      let walletGroups = await JSON.parse(JSON.stringify(walletGroupsRaw)).map((item) => item.groups);
+        let wallet = await JSON.parse(JSON.stringify(walletRaw))
+      
+        /** STEP 2: RETRIEVE GROUPS RECORDS */
+        let walletGroupsRaw = await WalletGroups.where('wallet_id', wallet.id).fetchAll({withRelated: ['groups']});
 
-      /** 
-       * STEP 3: RETRIEVE FOLLOWING WALLETS
-       */
-      let followingRaw = await WalletFollowers.where('follower_id', wallet.id).fetchAll();
+        let walletGroups = await JSON.parse(JSON.stringify(walletGroupsRaw)).map((item) => item.groups);
 
-      let followingIds = JSON.parse(JSON.stringify(followingRaw)).map((following) => following.id);
+        /** STEP 3: RETRIEVE FOLLOWING WALLETS */
+        let following = await WalletServices.findWalletFollowers('follower_id', wallet.id);
 
-      let followingWallets = await Wallets.where('id', 'in', followingIds).fetchAll();
+        /** STEP 4: RETRIEVE FOLLOWER WALLETS */
+        let followers = await WalletServices.findWalletFollowers('wallet_id', wallet.id);
 
-      /** 
-       * STEP 4: RETRIEVE FOLLOWER WALLETS
-       */
-      let followersRaw = await WalletFollowers.where('wallet_id', wallet.id).fetchAll();
+        /**  STEP 5: RETRIEVE TRANSACTION RECORDS FOR FOLLOWING WALLETS */
+        // let walletTransactions = await WalletTransactions.where('wallet_id','in', followingIds).fetchAll();
 
-      let followerIds = JSON.parse(JSON.stringify(followersRaw)).map((follower) => follower.id);
-
-      let followerWallets = await Wallets.where('id', 'in', followerIds).fetchAll();
-
-      /** 
-       * STEP 4: RETRIEVE TRANSACTION RECORDS FOR FOLLOWING WALLETS
-       */
-      let walletTransactions = await WalletTransactions.where('wallet_id','in', followingIds).fetchAll();
-
-      // DO SOMETHING
-
-      return res.json({
-        'info': wallet,
-        'groups': walletGroups || [],
-        'followers': JSON.parse(JSON.stringify(followerWallets)) || [],
-        'following': JSON.parse(JSON.stringify(followingWallets)) || []
-      });
-    } catch (err) {
-      if (err.message === 'EmptyResponse') {
-        return res.send('No Wallet with this address.')
-      } else {
-        console.error(err);
-  
-        return res.sendStatus(500);
+        return res.json({
+          'info': JSON.parse(JSON.stringify(walletRaw)),
+          'groups': walletGroups || [],
+          'followers': followers,
+          'following': following
+        });
+      } 
+      else 
+      {
+        const allWalletsRaw = await Wallets.fetchAll();
+      
+        const allWallets = JSON.parse(JSON.stringify(allWalletsRaw));
+    
+        const allWalletsFinal = await FrontendServices.formatWalletsForCombobox(allWallets);
+    
+        return res.json({ 'wallets': allWalletsFinal });
       }
+    } catch (err) {
+      console.log(err);
+
+      return res.sendStatus(500);
     }
   },
   postWallet: async function (req, res) {
@@ -181,17 +145,5 @@ module.exports = {
       'transactedTokens': transactedTokens,
       'transactions': transactions
     });
-  },
-  getWalletFollowers: async function (req, res) {
-    // Step 1: Get the desired walletAddress
-    // Step 2: Query walletFollowers for all followers where walled_id = walletAddress
-    // Step 3: Return list
-  },
-  postWalletFollower: async function (req, res) {
-    // Step 1: Get Logged In User walletAddress
-    // Step 2: Get walletAddress the user wants to follow
-    // Step 3: true or false if they want email notifiations
-    // Step 4: Create walletFollower record (if not created, create wallet record)
-    // Step 5: Create New Alchemy Trigger for the desired wallet
   },
 }
