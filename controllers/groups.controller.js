@@ -7,6 +7,7 @@ const WalletServices = require('../helpers/wallets.helper');
 // Database Models
 const Groups = require('../models/groups');
 const GroupWallets = require('../models/groupWallets');
+const WalletTransactions = require('../models/walletTransactions');
 
 module.exports = {
   getAllGroups: async function (req,res) {
@@ -47,11 +48,20 @@ module.exports = {
       /** 
        * STEP 2: RETRIEVE GROUPS RECORDS
        */
-      let groupWalletsRaw = await GroupWallets.where('group_id', groupId).fetchAll({withRelated: ['wallets']});
+      let groupWalletsRaw = await GroupWallets.where('group_id', groupId).fetchAll({withRelated: ['wallet']});
   
       let groupWallets = await JSON.parse(JSON.stringify(groupWalletsRaw)).map((item) => item.wallets);
   
       let groupWalletsFinal = await FrontendServices.formatGroupWalletsForSplitView(groupWallets)
+
+      /**
+       * STEP 3: RETRIEVE GROUP TRANSACTIONS
+       */
+      let groupWalletIds = await groupWallets.map((wallet) => wallet.id);
+
+      let walletTransactionsRaws = await WalletTransactions.where('wallet_id','in', groupWalletIds).fetchAll({withRelated: ['transaction']});
+
+      console.log(JSON.parse(JSON.stringify(walletTransactionsRaws)));
   
       return res.json({
         'info': group,

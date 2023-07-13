@@ -9,7 +9,7 @@ const TransactionsHelper = require('../helpers/transactions.helper');
 module.exports = {
   getTransactions: async function (req, res) {
     // Step 1: Get the desired walletAddress
-    const { address } = req.params;
+    const { address, groupId } = req.params;
 
     // Step 2: Query walletNotifications for all notifications where walled_id = walletAddress
 

@@ -5,10 +5,10 @@ const Transactions = require('./transactions.js');
 let WalletTransactions = bookshelf.Model.extend({
     tableName: 'wallet_transactions',
     hasTimestamps: true,
-    wallets: function () {
+    wallet: function () {
         return this.belongsTo(Wallets);
     },
-    transactions: function () {
+    transaction: function () {
         return this.belongsTo(Transactions);
     },
 });

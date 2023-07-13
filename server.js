@@ -20,8 +20,13 @@ const WalletsController = require('./controllers/wallets.controller');
 app.get('/api/wallet', WalletsController.getWallets);
 app.post('/api/wallet', WalletsController.postWallet);
 app.put('/api/wallet', WalletsController.putWallet);
+
 app.get('/api/wallet/tokens', WalletsController.getWalletTokens);
 app.get('/api/wallet/transactions', WalletsController.getWalletTransactions);
+
+const WalletFollowersController = require('./controllers/walletFollowers.controller');
+app.get('/api/wallet/followers', WalletFollowersController.getWalletFollowers);
+app.post('/api/wallet/followers', WalletFollowersController.postWalletFollower);
 
 // Group Routes
 const GroupsController = require('./controllers/groups.controller');
@@ -31,9 +36,9 @@ app.post('/api/group', GroupsController.postGroup);
 app.post('/api/group/wallet', GroupsController.postGroupWallet);
 
 // Transaction Routes
-const TransactionsController = require('./controllers/transactions.controller');
-app.get('/api/transaction', TransactionsController.getTransactions);
-app.post('/api/transaction', TransactionsController.postTransaction);
+const WalletTransactionsController = require('./controllers/walletTransactions.controller');
+app.get('/api/transaction', WalletTransactionsController.getTransactions);
+app.post('/api/transaction', WalletTransactionsController.postTransaction);
 
 // Swagger Routes
 app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

@@ -4,10 +4,10 @@ const Wallets = require('./wallets');
 let WalletFollowers = bookshelf.Model.extend({
     tableName: 'wallet_followers',
     hasTimestamps: true,
-    wallets: function () {
+    wallet: function () {
         return this.belongsTo(Wallets);
     },
-    followers: function () {
+    follower: function () {
         return this.belongsTo(Wallets);
     },
 });
